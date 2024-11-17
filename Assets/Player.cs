@@ -8,9 +8,9 @@ public class Player : MonoBehaviour
     private float jumpPower = 4;//ジャンプ力
 
     [SerializeField]
-    private float moveSpped = 10;//移動
+    private float moveSpeed = 10;//移動
 
-    private CharacterController CharacterController;
+    private CharacterController characterController;
     private Vector3 velocity;//
 
     public float sensitivityX = 15F;//マウス横の強さ
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     public float minimumX = -360F;//横の回転の最低値
     public float maximumX = 360F;//横の回転の最大値
 
-    public float manimumY = -60F;//縦の回転の最低値
+    public float minimumY = -60F;//縦の回転の最低値
     public float maximumY = 60F;//最大値
 
     float rotationX = 0F;
@@ -39,12 +39,12 @@ public class Player : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.W))//もしWキーが押されたら
         {
-            CharacterController.Move(this.gameObject.transform.forward * moveSpped * Time.deltaTime);//前方にmovespeed 時間経過分動かす
+            characterController.Move(this.gameObject.transform.forward * moveSpeed * Time.deltaTime);//前方にmovespeed 時間経過分動かす
 
         }
-        if(Input.GetKey(Keycode.S))//
+        if(Input.GetKey(KeyCode.S))//
         {
-            CharacterController.Move(this.gameObject.transform.right * -1 * moveSpped * Time.deltaTime);//
+            characterController.Move(this.gameObject.transform.right * -1 * moveSpeed * Time.deltaTime);//
         }
         if (Input.GetKey(KeyCode.A))// もし、Aキーがおされたら、
         {
@@ -55,5 +55,23 @@ public class Player : MonoBehaviour
         {
             characterController.Move(this.gameObject.transform.right * moveSpeed * Time.deltaTime);// 右にMoveSpeed * 時間経過分動かす
         }
+        
+        characterController.Move(velocity * Time.deltaTime);//
+        velocity.y += Physics.gravity.y * Time.deltaTime;//
+
+        if(characterController.isGrounded)//
+        {
+            velocity.y = jumpPower;//
+        }
+
+        rotationX=transform.localEulerAngles.y + Input.GetAxis("Mouse X")*sensitivityX;//
+
+        rotationY += Input.GetAxis("Mouse Y")*sensitivityY;//
+        rotationY = Mathf.Clamp(rotationY,minimumY,maximumY);//
+
+        verRot.transform.localEulerAngles = new Vector3(-rotationY,0,0);//
+        horRot.transform.localEulerAngles = new Vector3(0,rotationY,0);//
     }
+
+    
 }
