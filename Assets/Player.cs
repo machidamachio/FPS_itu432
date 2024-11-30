@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKey(KeyCode.S))//
         {
-            characterController.Move(this.gameObject.transform.right * -1 * moveSpeed * Time.deltaTime);//
+            characterController.Move(this.gameObject.transform.forward * -1 * moveSpeed * Time.deltaTime);//
         }
         if (Input.GetKey(KeyCode.A))// もし、Aキーがおされたら、
         {
